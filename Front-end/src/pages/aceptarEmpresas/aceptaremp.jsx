@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Infopostu } from '../../helpers/infopostu';
 import { Infoemp } from '../../helpers/infoemp';
 import ConfirmModal from '../../components/modales/modalconfirm';
 import Modalcarga from '../../components/modales/modalcarga/modalcarga';
 import CancelModal from "../../components/modales/modalcancel";
 import { Autoeva } from '../../helpers/autoeva';
+import { useParams } from 'react-router-dom';
 
 const DeveloperPortal = () => {
     const [activeTab, setActiveTab] = useState('products');
@@ -16,6 +17,32 @@ const DeveloperPortal = () => {
     const closeCModal = () => setIsCOpen(false);
     const openModal = () => setIsOpen(true);
     const openCModal = () => setIsCOpen(true);
+
+    const [empresa, setEmpresa] = useState(null);
+    const [representante, setRepresentante] = useState(null);
+
+    useEffect(() => {
+        if (nit) {
+            // Llamada a la API para obtener los datos de la empresa
+            fetch(`/api/v2/empresas/${nit}/`)
+                .then(response => response.json())
+                .then(data => {
+                    setEmpresa(data);
+                    // Suponiendo que el representante está en el objeto de empresa
+                    if (data.representante_id) {
+                        fetch(`/api/v2/representantes/${data.representante_id}/`)
+                            .then(response => response.json())
+                            .then(repData => setRepresentante(repData));
+                    }
+                })
+                .catch(error => console.error('Error al obtener los datos de la empresa:', error));
+        }
+    }, [nit]);
+
+    if (!empresa || !representante) {
+        return <div>Cargando...</div>;
+    }
+
 
     const handleCancel = () => {
         openSuccessModal();
@@ -34,6 +61,8 @@ const DeveloperPortal = () => {
             location.reload();
         }, 1000); // 1 segundo
     };
+
+    
 
     const renderContent = () => {
         switch (activeTab) {
@@ -73,31 +102,31 @@ const DeveloperPortal = () => {
             case 'infoemp':
                 return (
                     <div>
-                        {Infoemp.map((info, index) => (
+                        {Infoemp.map((empresa, index) => (
                             <div key={index} className="bg-greyBlack p-12 rounded-xl mb-4">
                                 <div className="grid grid-cols-3 p-3 justify-between">
                                     <div className="col-span-1">
                                         <h2 className="text-xl font-bold mb-2 text-white">Producto o Servicio</h2>
-                                        <p className="text-principalGreen font-semibold mb-6">{info.producto_servicio}</p>
+                                        <p className="text-principalGreen font-semibold mb-6">{empresa.producto_servicio}</p>
                                         <h2 className="text-xl font-bold mt-2 mb-2 text-white">Fecha de Inicio</h2>
-                                        <p className="text-principalGreen font-semibold mb-6">{info.fecha_creacion}</p>
+                                        <p className="text-principalGreen font-semibold mb-6">{empresa.fecha_creacion}</p>
                                         <h2 className="text-xl font-bold mt-2 mb-2 text-white">Costos el Ultimo Año</h2>
-                                        <p className="text-textBg font-semibold mb-6"> {info.costos_ult_ano}</p>
+                                        <p className="text-textBg font-semibold mb-6"> {empresa.costos_ult_ano}</p>
 
                                     </div>
                                     <div className="col-span-1">
                                         <h2 className="text-xl font-bold mb-2 text-white">Razon Social</h2>
-                                        <p className="text-principalGreen font-semibold mb-6">{info.razon_social}</p>
+                                        <p className="text-principalGreen font-semibold mb-6">{empresa.razon_social}</p>
                                         <h2 className="text-xl font-bold mt-2 mb-2 text-white">Celular Empresa</h2>
-                                        <p className="text-principalGreen font-semibold mb-6">{info.celular}</p>
+                                        <p className="text-principalGreen font-semibold mb-6">{empresa.celular}</p>
                                         <h2 className="text-xl font-bold mt-2 mb-2 text-white">Ventas el Ultimo Año</h2>
-                                        <p className="text-textBg font-semibold mb-6">{info.ventas_ult_ano}</p>
+                                        <p className="text-textBg font-semibold mb-6">{empresa.ventas_ult_ano}</p>
                                     </div>
                                     <div className="col-span-1">
                                         <h2 className="text-xl font-bold mb-2 text-white">NIT</h2>
-                                        <p className="text-principalGreen font-semibold mb-6">{info.nit}</p>
+                                        <p className="text-principalGreen font-semibold mb-6">{empresa.nit}</p>
                                         <h2 className="text-xl font-bold mt-2 mb-2 text-white">Empleados Permanentes</h2>
-                                        <p className="text-textBg font-semibold mb-6">{info.empleados_perm}</p>
+                                        <p className="text-textBg font-semibold mb-6">{empresa.empleados_perm}</p>
                                     </div>
                                 </div>
                             </div>

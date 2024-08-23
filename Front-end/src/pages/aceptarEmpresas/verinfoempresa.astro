@@ -1,22 +1,21 @@
 ---
-import DeveloperPortal from "./aceptaremp.jsx";
-import LayoutDashboard from "../../layouts/LayoutDashboard.astro";
-import GoBack from "../../components/inputs/goback/goBack.jsx";
+import DeveloperPortal from './aceptaremp';
+import LayoutDashboard from '../../layouts/LayoutDashboard.astro';
+import GoBack from '../../components/inputs/goback/goBack.jsx';
+
+// Captura el parámetro de la ruta
+const { nit } = Astro.params;
 ---
 
 <LayoutDashboard title="Aceptar Empresa">
     <main class="flex flex-row w-full bg-greyBlack h-screen">
         <div class="flex flex-col w-full h-full">
-          <div
-            class="bg-greyBlack flex content-center justify-end h-20 w-full"
-          >
-          </div>
-          <div class="bg-greyBg flex flex-col px-6 py-6 h-full w-full">
-            <GoBack text={"Informacion Empresas"} client:visible />
-            <DeveloperPortal client:visible />
-          </div>
+            <div class="bg-greyBlack flex content-center justify-end h-20 w-full"></div>
+            <div class="bg-greyBg flex flex-col px-6 py-6 h-full w-full">
+                <GoBack text={"Informacion Empresas"} client:load />
+                <DeveloperPortal nit={nit} client:load />
+            </div>
         </div>
-      </main>
-    
-
+    </main>
 </LayoutDashboard>
+
