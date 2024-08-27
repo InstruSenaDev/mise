@@ -141,12 +141,12 @@ class Talleres(models.Model):
 
 
 class Usuario(models.Model):
-    id_usuario = models.IntegerField(primary_key=True)
+    id_usuario = models.AutoField(primary_key=True)
     id_rol = models.ForeignKey(Rol, models.DO_NOTHING, db_column='id_rol')
     estado = models.TextField()
     correo = models.TextField()
-    celular = models.IntegerField()
-    documento = models.IntegerField()
+    celular = models.BigIntegerField()
+    documento = models.BigIntegerField()
     programa = models.TextField()
     contrasena = models.TextField(db_collation='utf8mb4_0900_ai_ci')
     nombres = models.TextField()

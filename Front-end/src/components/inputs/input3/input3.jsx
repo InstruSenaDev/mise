@@ -27,6 +27,8 @@ const InputComponent = ({
           name={name}
           onChange={onChange}
           autoComplete='off'
+          onFocus={(e) => e.target.removeAttribute('readonly')} // Evitar autocompletado usando readonly
+          readOnly // Hacer que sea de solo lectura hasta que se seleccione
         />
       </div>
     </div>

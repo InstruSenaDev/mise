@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import ModalLogout from "../modales/modalcs.jsx";
 import IconLogOut from "../../images/sideBarsvg/log_out.svg";
+import InfoModal from '../modales/modalinfouser.jsx';
 import Modalcarga from '../modales/modalcarga/modalcarga.jsx';
 
 const SidebarModalManager = () => {
@@ -46,6 +47,7 @@ const SidebarModalManager = () => {
                 onClose={handleCloseModal} 
                 onConfirm={handleConfirmLogout} 
             />
+            <InfoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
             {isSuccessModalVisible && (
                 <Modalcarga />
             )}

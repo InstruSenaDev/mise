@@ -13,6 +13,12 @@ export const FormRegistro = () => {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
 
+    const optionstamaño = [
+        { value: 'Microempresa', label: 'Microempresa' },
+        { value: 'Pequeña empresa', label: 'Pequeña empresa' },
+        { value: 'Mediana empresa', label: 'Mediana empresa' },
+        { value: 'Empresa grande', label: 'Empresa grande' },
+    ];
 
     const [values, setValues] = useState({
         producto: '',
@@ -24,6 +30,7 @@ export const FormRegistro = () => {
         ventas_anopasado: '',
         gastos_costos: '',
         fecha_registro: null,
+        tamano_empresa: '',
     });
 
     const formatCurrency = (value) => {
@@ -49,17 +56,34 @@ export const FormRegistro = () => {
 
 
     const handleInputChange = (name, value) => {
-        if (name === 'celular' && value.length > 10) {
-            return; // No actualiza el valor si excede 10 dígitos
+        if (name === "razon_social") {
+            // Filtrar caracteres no permitidos para nombre y apellido
+            value = value.replace(/[0-9]/g, "");
         }
-        if (name === 'nit' && value.length > 9) {
-            return; // No actualiza el valor si excede 9 dígitos
+        if (name === "celular") {
+            if (value.length > 10) {
+                return; // Evitar que se ingrese más de 10 dígitos
+            }
         }
-        if (name === 'no_empleados' && value.length > 3) {
-            return; // No actualiza el valor si excede 10 dígitos
+        if (name === "nit") {
+            if (value.length > 9) {
+                return; // Evitar que se ingrese más de 10 dígitos
+            }
         }
-        if (name === 'ventas_anopasado', 'ventas_anopasado' && value.length > 10) {
-            return; // No actualiza el valor si excede 10 dígitos
+        if (name === "ndocumento") {
+            if (value.length > 5) {
+                return; // Evitar que se ingrese más de 10 dígitos
+            }
+        }
+        if (name === "ventas_anopasado") {
+            if (value.length > 10) {
+                return; // Evitar que se ingrese más de 10 dígitos
+            }
+        }
+        if (name === "gastos_costos") {
+            if (value.length > 10) {
+                return; // Evitar que se ingrese más de 10 dígitos
+            }
         }
         setValues(prevValues => ({
             ...prevValues,
@@ -97,6 +121,9 @@ export const FormRegistro = () => {
             newErrors.gastos_costos = "Debe ingresar los gastos o costos del año pasado.";
         }
 
+        if (!values.tamano_empresa) {
+            newErrors.tamano_empresa = "Debe seleccionar el tamaño de la empresa.";
+        }
 
         return newErrors;
     }
@@ -118,7 +145,7 @@ export const FormRegistro = () => {
             console.log('Inputs value:', updatedValues);
             setValues(updatedValues);  // Actualizamos los valores antes de cerrar el modal
             closeModal();
-            // window.location.href = "/registroEmpresa/registroEmpresa";
+            window.location.href = "/autoevaluacion/autoevaluacion";
         }
 
     };
@@ -137,7 +164,7 @@ export const FormRegistro = () => {
         <>
             <ConfirmModal isOpen={isOpen} closeModal={closeModal} handleConfirm={handleConfirm} />
 
-            <div class="flex flex-row w-full justify-between">
+            <div class="flex flex-row w-[45rem] justify-between">
                 <p class="font-bold text-3xl text-left">Registro Empresa</p>
                 <svg
                     fill="#ffffff"
@@ -169,11 +196,11 @@ export const FormRegistro = () => {
                     </g>
                 </svg>
             </div>
-            <form className="form bg-greyBlack rounded-xl p-3 flex flex-row">
-                <div className="flex flex-col gap-3 w-full">
+            <form className="form w-[45rem] flex flex-col gap-6 bg-greyBlack p-3 rounded-xl">
+                <div className="flex flex-col gap-6 w-full">
                     <div className='flex flex-row gap-3'>
                         <input
-                            className={`h-[3.5rem] w-full rounded-lg caret-white bg-transparent text-white peer border p-5 font-sans text-lg font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-white placeholder-shown:border-t-white`}
+                            className={`h-full w-[41rem] rounded-lg caret-white bg-transparent text-white peer border p-5 font-sans text-lg font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-white placeholder-shown:border-t-white`}
                             type="text"
                             value={values.producto}
                             name="producto"
@@ -184,7 +211,7 @@ export const FormRegistro = () => {
 
                         <DatePicker
                             name="fecha_inicio"
-                            className="mx-auto pt-2 h-[3.5rem] colors:tremor-background-subtle"
+                            className="mx-auto pt-2 h-[3.5rem] colors:tremor-background-subtle z-10"
                             onValueChange={(value) => {
                                 handleInputChange('fecha_inicio', value);
                             }}
@@ -211,6 +238,13 @@ export const FormRegistro = () => {
                             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                         />
                     </div>
+                    <SelectComponent
+                        type={"Tamaño de la empresa..."}
+                        Select="tamano_empresa"
+                        options={optionstamaño}
+                        value={values.tamano_empresa || ''}
+                        onChange={(value) => handleInputChange("tamano_empresa", value)}
+                    />
                     <div className='flex flex-row gap-3'>
                         <input
                             className={`h-[3.5rem] w-full rounded-lg caret-white bg-transparent text-white peer border p-5 font-sans text-lg font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-white placeholder-shown:border-t-white`}
@@ -221,7 +255,7 @@ export const FormRegistro = () => {
                             autoComplete="off"
                             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                         />
-                        
+
                         <input
                             className={`h-[3.5rem] w-full rounded-lg caret-white bg-transparent text-white peer border p-5 font-sans text-lg font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-white placeholder-shown:border-t-white`}
                             type="number"

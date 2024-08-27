@@ -32,7 +32,6 @@ const UserTable = () => {
         fetchRoles();
     }, []);
 
-    // Crear un mapa para acceder fácilmente al nombre del rol por id
     const roleMap = new Map(roles.map(role => [role.id_rol, role.descripcion]));
 
     const handleSearch = (term) => {
@@ -43,14 +42,20 @@ const UserTable = () => {
         <>
             <div className='flex flex-row w-full'>
                 <Buscador onSearch={handleSearch} />
-                <div className='w-full py-5 flex items-center justify-end'><a className='' href="/nuevoUser/nuevoUser"><button className='bg-principalGreen rounded-xl p-2 text-white hover:bg-white hover:text-principalGreen'>Nuevo Usuario</button></a></div>
-
+                <div className='w-full py-5 flex items-center justify-end'>
+                    <a href="/nuevoUser/nuevoUser">
+                        <button className='bg-principalGreen rounded-xl p-2 text-white hover:bg-white hover:text-principalGreen'>
+                            Nuevo Usuario
+                        </button>
+                    </a>
+                </div>
             </div>
             <div className="overflow-y-auto max-h-[40rem] custom-scrollbar w-full justify-center rounded-b-xl">
                 <div className="bg-greyBlack border-textBg rounded-t-xl text-white flex">
                     <div className="flex-1 p-5 text-left">Nombre</div>
                     <div className="flex-1 p-5 text-center">MISE encargado</div>
-                    <div className="w-28 p-5 text-right">Rol</div>
+                    <div className="flex-1 p-5 text-center">Rol</div>
+                    <div className="flex-1 p-5 text-center"></div> {/* Nueva columna para el botón */}
                 </div>
                 <div className="overflow-auto divide-y border border-textBg border-t-0 rounded">
                     {usuarios
@@ -61,6 +66,7 @@ const UserTable = () => {
                                 nombre={`${usuario.nombres} ${usuario.apellidos}`}
                                 MISE={usuario.programa}
                                 dataRol={roleMap.get(usuario.id_rol)}
+                                id_usuario={usuario.id_usuario}
                             />
                         ))
                     }

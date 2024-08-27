@@ -14,6 +14,7 @@ export const FormRegistro = () => {
         genero: "",
         ciudad: "",
         educacion: "",
+        cargo: "",
         TyC: false,
     });
     
@@ -23,9 +24,18 @@ export const FormRegistro = () => {
         { value: 'Permiso Especial de Permanencia', label: 'Permiso Especial de Permanencia' },
     ];
 
+    const optionscargo = [
+        { value: 'Representante legal', label: 'Representante legal' },
+        { value: 'Gerente', label: 'Gerente' },
+        { value: 'Jefe / Director', label: 'Jefe / Director' },
+        { value: 'Administrador', label: 'Administrador' },
+        { value: 'Colaborador', label: 'Colaborador' },
+    ];
+
     const optionsgender = [
         { value: 'Masculino', label: 'Masculino' },
         { value: 'Femenino', label: 'Femenino' },
+        { value: 'Prefiero no decirlo', label: 'Prefiero no decirlo' },
     ];
 
     const optionscity = [
@@ -47,6 +57,16 @@ export const FormRegistro = () => {
         if (name === "nombre" || name === "apellido") {
             // Filtrar caracteres no permitidos para nombre y apellido
             value = value.replace(/[0-9]/g, "");
+        }
+        if (name === "celular") {
+            if (value.length > 10) {
+                return; // Evitar que se ingrese más de 10 dígitos
+            }
+        }
+        if (name === "ndocumento") {
+            if (value.length > 10) {
+                return; // Evitar que se ingrese más de 10 dígitos
+            }
         }
         setValues({
             ...values,
@@ -95,6 +115,10 @@ export const FormRegistro = () => {
             newErrors.ciudad = "Debe seleccionar una ciudad.";
         }
 
+        if (!values.cargo) {
+            newErrors.cargo = "Debe seleccionar su cargo en la empresa.";
+        }
+
         if (!values.TyC) {
             newErrors.TyC = "Debe aceptar los términos y condiciones.";
         }
@@ -114,7 +138,7 @@ export const FormRegistro = () => {
 
         if (Object.keys(validationErrors).length === 0) {
             // Aquí redirigimos usando `window.location`
-            window.location.href = '/registroEmpresa/registroEmpresa'; // Cambia '/empresa-form' a la ruta de tu formulario de empresa
+            window.location.href = '/registroEmpresa/registroEmpresa';
         } else {
             setErrors(validationErrors);
             setIsModalVisible(true);
@@ -122,7 +146,7 @@ export const FormRegistro = () => {
     };
     return (
         <>
-            <form onSubmit={handleSubmit} className="form flex flex-col gap-6 bg-greyBlack p-3 rounded-xl">
+            <form onSubmit={handleSubmit} className="form w-[45rem] flex flex-col gap-6 bg-greyBlack p-3 rounded-xl">
                 <div className="flex flex-row w-full gap-5">
                     <input
                         className={`h-full w-full rounded-lg caret-white bg-transparent text-white peer border p-5 font-sans text-lg font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-white placeholder-shown:border-t-white ${errors.nombre ? 'border-red-500' : ''}`}
@@ -150,7 +174,7 @@ export const FormRegistro = () => {
                         options={optionsdocu}
                         value={values.documento || ''}
                         onChange={(value) => handleInputChange("documento", value)}
-                        className={`${errors.documento ? 'border-red-500' : ''}`}
+                        className={`${errors.documento ? 'border-red' : ''}`}
                     />
                     <input
                         className={`h-full w-full rounded-lg caret-white bg-transparent text-white peer border p-5 font-sans text-lg font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-white placeholder-shown:border-t-white ${errors.ndocumento ? 'border-red-500' : ''}`}
@@ -198,13 +222,20 @@ export const FormRegistro = () => {
                         className={`${errors.ciudad ? 'border-red-500' : ''}`}
                     />
                 </div>
-                <div className="flex w-full">
+                <div className="flex flex-row w-full gap-5">
                     <SelectComponent
                         type={"Educación Superior..."}
                         Select="educacion"
                         options={optionseducacion}
                         value={values.educacion || ''}
                         onChange={(value) => handleInputChange("educacion", value)}
+                    />
+                    <SelectComponent
+                        type={"Cargo en la empresa..."}
+                        Select="cargo"
+                        options={optionscargo}
+                        value={values.cargo || ''}
+                        onChange={(value) => handleInputChange("cargo", value)}
                     />
                 </div>
                 <div className="flex h-8 gap-2 items-center justify-start">

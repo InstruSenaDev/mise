@@ -4,6 +4,9 @@ import Boton from "../../components/inputs/boton.jsx";
 import iconGB from "../../images/icons/iconsEditUser/GoBack.png";
 import iconUser from "../../images/icons/iconsEditUser/User.png";
 import Input3 from "../../components/inputs/input3/input3.jsx";
+import FormsEditaruser from "../../components/forms/formsEditaruser/formsEditaruser";
+import GoBack from "../../components/inputs/goback/goBack";
+import { Infouser } from '../../helpers/edituser.js';
 ---
 
 <LayoutDashboard title="Editar Usuario">
@@ -13,11 +16,8 @@ import Input3 from "../../components/inputs/input3/input3.jsx";
         class="bg-greyBlack flex content-center pt-4 pr-5 justify-end h-20 w-full"
       >
       </div>
-      <div class="bg-greyBg flex flex-col px-8 h-full w-full">
-        <div class="flex flex-row gap-3 items-center text-textBg pt-3 pb-3 font-semibold">
-          <img src={iconGB.src} alt="" />
-          <p class="">Usuarios Registrados / Juan Fernando Grajales Ibargüen</p>
-        </div>
+      <div class="bg-greyBg py-4 flex flex-col px-8 h-full w-full">
+        <GoBack client:visible text={`Usuarios Registrados ${Infouser[0].nombres} ${Infouser[0].apellidos}`}></GoBack>
         <div class="bg-greyBlack flex flex-col px-10 w-full rounded-md">
           <div class="flex flex-row py-2">
             <img src={iconUser.src} class="p-12" alt="" />
@@ -33,57 +33,7 @@ import Input3 from "../../components/inputs/input3/input3.jsx";
             <p class="text-white  text-3xl">
               Informacion Personal
             </p>
-            <div
-              class="flex flex-col text-textBg w-full pl-3 font-semibold gap-x-20 py-5 overflow-y-visible"
-            >
-              <Input3
-                width="w-44"
-                widthInput="w-full"
-                DataType="Nombre"
-                inputPlaceholder="Nombre Completo"
-                inputType="text"
-                height="h-12"
-                additionalClass="w-full"
-              />
-              <Input3
-                width="w-44"
-                widthInput="w-full"
-                DataType="Email"
-                inputPlaceholder="Correo Electronico"
-                inputType="email"
-                height="h-12"
-                additionalClass=""
-              />
-              <div class="flex flex-row gap-5">
-                <Input3
-                width="w-44"
-                widthInput="w-full"
-                DataType="Celular"
-                inputPlaceholder="Prefijo"
-                inputType="number"
-                height="h-12"
-                additionalClass=""
-              />
-              <Input3
-                width="w-4"
-                widthInput="w-full"
-                DataType=""
-                inputPlaceholder="Numero Celular"
-                inputType="number"
-                height="h-12"
-                additionalClass=""
-              />
-              </div>
-              <Input3
-                width="w-44"
-                widthInput="w-full"
-                DataType="Contraseña"
-                inputPlaceholder="*********"
-                inputType="password"
-                height="h-12"
-                additionalClass=""
-              />
-            </div>
+            <FormsEditaruser client:visible />
           </div>
         </div>
       </div>

@@ -24,7 +24,7 @@ const Form = () => {
         event.preventDefault();
 
         console.log("Inputs value:", values);
-        
+
         try {
             const response = await fetch("http://localhost:8000/api/v2/login", {
                 method: "POST",
@@ -33,9 +33,9 @@ const Form = () => {
                 },
                 body: JSON.stringify(values),
             });
-    
+
             const data = await response.json();
-            
+
             if (response.ok) {
                 console.log("Login con éxito:", data);
                 localStorage.setItem("access_token", data.access_token);
@@ -56,8 +56,10 @@ const Form = () => {
     return (
         <>
             <form onSubmit={handleForm} className="form flex flex-col gap-6">
-                <input className="h-full w-full rounded-lg caret-white bg-transparent text-white peer border p-5 font-sans text-lg font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-white placeholder-shown:border-t-white " type="email" value={values.correo} name="correo" placeholder="Ingrese su correo..." autoComplete="off" onChange={handleInputChange} />
-                <input className="h-full w-full rounded-lg caret-white bg-transparent text-white peer border p-5 font-sans text-lg font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-white placeholder-shown:border-t-white " type={showPassword ? "text" : "password"} value={values.contrasena} name="contrasena" placeholder="Ingrese su contraseña..." onChange={handleInputChange} />
+                <input className="h-full w-full rounded-lg caret-white bg-transparent text-white peer border p-5 font-sans text-lg font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-white placeholder-shown:border-t-white " type="email" value={values.correo} name="correo" placeholder="Ingrese su correo..." autoComplete="off" onFocus={(e) => e.target.removeAttribute('readonly')} // Evitar autocompletado usando readonly
+                    readOnly onChange={handleInputChange} />
+                <input onFocus={(e) => e.target.removeAttribute('readonly')}
+                    readOnly className="h-full w-full rounded-lg caret-white bg-transparent text-white peer border p-5 font-sans text-lg font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-white placeholder-shown:border-t-white " type={showPassword ? "text" : "password"} value={values.contrasena} name="contrasena" placeholder="Ingrese su contraseña..." onChange={handleInputChange} />
 
                 <div className="flex gap-2 items-center justify-between">
                     <div className="flex h-7">

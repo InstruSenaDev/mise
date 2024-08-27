@@ -7,7 +7,7 @@ const CancelModal = ({ isCOpen, closeCModal, handleCancel }) => {
     return (
         <>
             {isCOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded-lg shadow-lg text-center">
                         <p className="text-xl font-semibold text-black">¿Quieres hacer esto?</p>
                         <p className="text-black mt-2">Solo queremos estar seguros...</p>

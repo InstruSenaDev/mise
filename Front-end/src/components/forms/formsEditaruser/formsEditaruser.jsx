@@ -3,8 +3,9 @@ import InputComponent from '../../inputs/input3/input3.jsx';
 import SelectComponent from '../../inputs/selectores/selectores.jsx';
 import ConfirmModal from '../../modales/modalconfirm';
 import Modalcarga from '../../modales/modalcarga/modalcarga.jsx';
+import { Infouser } from '../../../helpers/edituser.js';
 
-export const FormsNuevouser = () => {
+export const FormsEditaruser = () => {
 
     const roles = [
         { value: '1', label: 'Superadmin' },
@@ -104,48 +105,27 @@ export const FormsNuevouser = () => {
         console.log("Inputs value:", values); // Mostrar los valores de los inputs en la consola
         closeModal();
         openSuccessModal();
-        try {
-            const response = await fetch('http://localhost:8000/api/v2/user', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(values),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                console.log("Server response:", data); // Mostrar la respuesta del servidor en la consola
-                // Aquí puedes agregar lógica para manejar la respuesta positiva, como mostrar un mensaje de éxito
-            } else {
-                console.error("Error submitting form:", data); // Mostrar errores en la consola
-                // Aquí puedes agregar lógica para manejar errores, como mostrar un mensaje de error
-            }
-        } catch (error) {
-            console.error("Network error:", error); // Mostrar errores de red en la consola
-        }
     }
 
     const openSuccessModal = () => {
         setIsSuccessModalVisible(true);
         setTimeout(() => {
             setIsSuccessModalVisible(false);
-            location.reload();
+            
         }, 1000); // 5 segundos
     };
 
     return (
         <>
             <ConfirmModal isOpen={isOpen} closeModal={closeModal} handleConfirm={handleForm} />
-            <form className="flex flex-col text-textBg w-full font-semibold gap-5 py-4 overflow-y-visible">
+            <form autoComplete='off' className="flex flex-col text-textBg w-full font-semibold gap-5 py-4 overflow-y-visible">
                 <div className='flex flex-row gap-5'>
                     <div className=' flex flex-col pl-3 font-semibold gap-5 py-4'>
                         <InputComponent
                             width="w-44"
                             widthInput="w-full"
                             DataType="Nombre"
-                            inputPlaceholder="Nombre"
+                            inputPlaceholder={Infouser[0].nombres}
                             inputType="text"
                             height="h-12"
                             additionalClass="w-full"
@@ -159,7 +139,7 @@ export const FormsNuevouser = () => {
                             width="w-44"
                             widthInput="w-full"
                             DataType="Apellido"
-                            inputPlaceholder="Apellido"
+                            inputPlaceholder={Infouser[0].apellidos}
                             inputType="text"
                             height="h-12"
                             additionalClass="w-full"
@@ -172,7 +152,7 @@ export const FormsNuevouser = () => {
                             width="w-44"
                             widthInput="w-full"
                             DataType="Correo"
-                            inputPlaceholder="Correo Electronico"
+                            inputPlaceholder={Infouser[0].correo}
                             inputType="email"
                             height="h-12"
                             additionalClass=""
@@ -185,7 +165,14 @@ export const FormsNuevouser = () => {
                                 <p className="font-semibold">Rol</p>
                             </div>
                             <div className='w-[14rem]'>
-                                <SelectComponent name="id_rol" type="Rol..." options={roles} value={values.id_rol} onChange={(value) => handleInputChange("id_rol", value)} />
+                               <SelectComponent
+                                    name="id_rol"
+                                    type="Rol..."
+                                    options={roles}
+                                    value={values.id_rol}
+                                    onChange={(value) => handleInputChange("id_rol", value)}
+                                    placeholder={Infouser[0].id_rol}
+                                />
                             </div>
                         </div>
                         <div>
@@ -205,20 +192,21 @@ export const FormsNuevouser = () => {
                             width="w-44"
                             widthInput="w-full"
                             DataType="Celular"
-                            inputPlaceholder="Numero de Celular"
+                            inputPlaceholder={Infouser[0].celular}
                             inputType="number"
                             height="h-12"
                             additionalClass=""
                             name="celular"
                             value={values.celular}
                             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
+    
                         />
                         {errors.celular && <p className="text-red">{errors.celular}</p>}
                         <InputComponent
                             width="w-44"
                             widthInput="w-full"
                             DataType="Documento"
-                            inputPlaceholder="Numero Documento"
+                            inputPlaceholder={Infouser[0].documento}
                             inputType="number"
                             height="h-12"
                             additionalClass=""
@@ -231,7 +219,7 @@ export const FormsNuevouser = () => {
                             width="w-44"
                             widthInput="w-full"
                             DataType="Contraseña"
-                            inputPlaceholder="*********"
+                            inputPlaceholder={Infouser[0].contrasena}
                             inputType="password"
                             height="h-12"
                             additionalClass=""
@@ -267,4 +255,4 @@ export const FormsNuevouser = () => {
     );
 };
 
-export default FormsNuevouser;
+export default FormsEditaruser;

@@ -45,7 +45,7 @@ export default function Grafica() {
 
   return (
     <>
-      <Card className="bg-greyBlack w-[35rem] rounded-xl border-greyBlack sm:mx-auto sm:max-w-2xl">
+      <Card className="bg-greyBlack w-[35rem] rounded-xl border-greyBlack sm:mx-auto sm:max-w-2xl z-10">
         <h3 className="ml-1 mr-1 font-semibold text-white dark:text-dark-tremor-content-strong">
           Gráfica de empresas desarrolladas (2023-2024)
         </h3>

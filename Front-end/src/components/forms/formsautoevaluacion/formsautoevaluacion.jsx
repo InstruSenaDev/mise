@@ -99,18 +99,18 @@ export const FormAuto = () => {
     return (
         <>
             <ConfirmModal isOpen={isOpen} closeModal={closeModal} handleConfirm={handleForm} />
-            <div className='bg-greyBlack rounded-2xl w-max h-max p-12 flex flex-col gap-6'>
-                <div className="flex flex-row justify-between">
-                    <p className="font-bold text-3xl text-left">Diagnóstico</p>
+            <div className='bg-greyBlack w-max h-[49.5rem] p-12 flex flex-col gap-5 rounded-2xl'>
+                <div className="flex flex-row justify-center">
+                    <p className="font-bold text-3xl text-left">DIAGNOSTICO</p>
                 </div>
                 <p>
                     DE 1 A 10, SIENDO 1 LA CALIFICACIÓN MÁS BAJA Y 10 LA MÁS ALTA,<br />
                     CALIFIQUE CÓMO EVALÚA EL DESEMPEÑO DE SU EMPRESA EN LAS<br />
                     SIGUIENTES ÁREAS
                 </p>
-                <form className="form rounded-xl p-3 flex flex-col gap-4">
-                    <div className="flex flex-col gap-3 w-full">
-                        <div className='flex flex-row gap-3 items-center px-6'>
+                <form className="form items-center rounded-xl p-3 flex flex-col justify-around gap-[10rem]">
+                    <div className="flex flex-col gap-5 justify-center w-full">
+                        <div className='flex flex-row gap-3 items-center'>
                             <p className='text-xl w-full'>Estrategia y Dirección</p>
                             <SelectComponent
                                 type={"Calificación..."}
@@ -120,7 +120,7 @@ export const FormAuto = () => {
                                 onChange={(value) => handleInputChange("estrategia", value)}
                             />
                         </div>
-                        <div className='flex flex-row gap-3 items-center px-6'>
+                        <div className='flex flex-row gap-3 items-center'>
                             <p className='text-xl w-full'>Operaciones</p>
                             <SelectComponent
                                 type={"Calificación..."}
@@ -130,7 +130,7 @@ export const FormAuto = () => {
                                 onChange={(value) => handleInputChange("operaciones", value)}
                             />
                         </div>
-                        <div className='flex flex-row gap-3 items-center px-6'>
+                        <div className='flex flex-row gap-3 items-center'>
                             <p className='text-xl w-full'>Marketing</p>
                             <SelectComponent
                                 type={"Calificación..."}
@@ -140,7 +140,7 @@ export const FormAuto = () => {
                                 onChange={(value) => handleInputChange("marketing", value)}
                             />
                         </div>
-                        <div className='flex flex-row gap-3 items-center px-6'>
+                        <div className='flex flex-row gap-3 items-center'>
                             <p className='text-xl w-full'>Ventas</p>
                             <SelectComponent
                                 type={"Calificación..."}
@@ -150,7 +150,7 @@ export const FormAuto = () => {
                                 onChange={(value) => handleInputChange("ventas", value)}
                             />
                         </div>
-                        <div className='flex flex-row gap-3 items-center px-6'>
+                        <div className='flex flex-row gap-3 items-center'>
                             <p className='text-xl w-full'>Talento Humano</p>
                             <SelectComponent
                                 type={"Calificación..."}
@@ -160,11 +160,12 @@ export const FormAuto = () => {
                                 onChange={(value) => handleInputChange("talentoHumano", value)}
                             />
                         </div>
-                        <div className="flex justify-start">
-                            <button onClick={openModal} type='button' className="bg-principalGreen px-6 py-2 font-bold text-2xl rounded-lg">
-                                Postular
-                            </button>
-                        </div>
+
+                    </div>
+                    <div className="flex justify-start">
+                        <button onClick={openModal} type='button' className="bg-principalGreen px-6 py-2 font-bold text-2xl rounded-lg">
+                            Postular
+                        </button>
                     </div>
                 </form>
             </div>
