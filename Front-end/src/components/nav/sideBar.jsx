@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Logo from "../../images/logos/logoPrincipal.svg";
 import IconExpand from "../../images/sideBarImg/Expand icon.png";
-import ElementSidebar from "./elementSidebar.jsx";
+import ElementSidebar from "./elementsidebar.jsx";
 import Logomini from "../../images/sideBarImg/Logomini.png";
 import { Elementoscript } from "../../helpers/elements.js";
 import { Elementoscriptadmin } from "../../helpers/elementsadmin.js";

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Logo from '../../images/logos/logoPrincipal.svg';
 import IconExpand from '../../images/sideBarImg/Expand icon.png';
-import Elemento from './elementSidebar.jsx'; // Importa tu componente de ElementSidebar
+import Elemento from './elementsidebar'; // Importa tu componente de ElementSidebar
 import Logomini from '../../images/sideBarImg/Logomini.png';
 import IconLogOut from '../../images/sideBarsvg/log_out.svg';
 import { Elementoscript } from '../../helpers/elements';
