@@ -1,0 +1,19 @@
+---
+import LayoutDashboard from "../../../layouts/LayoutDashboard.astro";
+import GoBack from "../../../components/inputs/goback/goBack.jsx";
+import DeveloperPortal from "../../../components/empresas/aceptaremp";
+---
+
+<!-- Renderizamos todo en el cliente -->
+<LayoutDashboard title="Aceptar Empresa">
+  <main class="flex flex-row w-full bg-greyBlack h-screen">
+    <div class="flex flex-col w-full h-full">
+      <div class="bg-greyBlack flex content-center justify-end h-20 w-full">
+      </div>
+      <div class="bg-greyBg flex flex-col px-6 py-6 h-full w-full">
+        <GoBack text={"Informacion Empresas"} client:visible />
+        <DeveloperPortal client:visible />
+      </div>
+    </div>
+  </main>
+</LayoutDashboard>

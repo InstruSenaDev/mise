@@ -1,0 +1,34 @@
+---
+import DeveloperPortal from '../../components/empresas/aceptaremp';
+
+// Esta función genera las rutas dinámicas basadas en los NITs obtenidos de tu API
+export async function getStaticPaths() {
+  const response = await fetch('http://localhost:8000/api/v2/empresas/');
+  const empresas = await response.json();
+
+  return empresas.map((empresa) => ({
+    params: { nit: empresa.nit.toString() },
+  }));
+}
+
+// Esta función obtiene los datos específicos para cada página dinámica
+export async function getStaticProps({ params }) {
+  const nit = params.nit;
+  
+  // Realiza la petición para obtener los datos de la empresa basada en el NIT
+  const response = await fetch(`http://localhost:8000/api/v2/empresas/${nit}/`);
+  const empresa = await response.json();
+
+  return {
+    props: {
+      empresa,
+      nit, // Pasamos el NIT como prop para el componente React
+    }
+  };
+}
+
+const { empresa, nit } = Astro.props;
+
+---
+
+<DeveloperPortal empresa={empresa} nit={nit} />

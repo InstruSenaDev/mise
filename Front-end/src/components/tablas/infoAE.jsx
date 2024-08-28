@@ -73,7 +73,7 @@ const InfoAE = ({ nit, nombre_empresa, representante, razon_social }) => {
         </div>
         <div className="p-5 flex-1">
           <a href="/aceptarEmpresas/verinfoempresa">
-            <a href={`/aceptarEmpresas/verinfoempresa/${nit}`}>
+            <a href={`/aceptarEmpresas/${nit}`}>
               <button
                 onClick={handleViewCompany}
                 className="p-4  tracking-wide text-lg transition-colors duration-200 bg-transparent transform border-solid rounded-lg hover:bg-principalGreen hover:text-white hover:border-solid border hover:border-principalGreen"

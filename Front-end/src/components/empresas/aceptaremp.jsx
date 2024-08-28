@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Infopostu } from '../../helpers/infopostu';
 import { Infoemp } from '../../helpers/infoemp';
-import ConfirmModal from '../../components/modales/modalconfirm';
-import Modalcarga from '../../components/modales/modalcarga/modalcarga';
-import CancelModal from "../../components/modales/modalcancel";
+import ConfirmModal from '../modales/modalconfirm';
+import Modalcarga from '../modales/modalcarga/modalcarga';
+import CancelModal from "../modales/modalcancel";
 import { Autoeva } from '../../helpers/autoeva';
 import { useParams } from 'react-router-dom';
 
@@ -18,28 +18,30 @@ const DeveloperPortal = () => {
     const openModal = () => setIsOpen(true);
     const openCModal = () => setIsCOpen(true);
 
-    const [empresa, setEmpresa] = useState(null);
-    const [representante, setRepresentante] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    const { nit } = useParams(); // Obtener el nit desde la URL
+    const [empresa, setEmpresaData] = useState(null);
 
     useEffect(() => {
-        if (nit) {
-            // Llamada a la API para obtener los datos de la empresa
-            fetch(`/api/v2/empresas/${nit}/`)
-                .then(response => response.json())
-                .then(data => {
-                    setEmpresa(data);
-                    // Suponiendo que el representante está en el objeto de empresa
-                    if (data.representante_id) {
-                        fetch(`/api/v2/representantes/${data.representante_id}/`)
-                            .then(response => response.json())
-                            .then(repData => setRepresentante(repData));
-                    }
-                })
-                .catch(error => console.error('Error al obtener los datos de la empresa:', error));
-        }
+        // Construye la URL correcta para hacer la solicitud
+        const fetchCompanyData = async () => {
+            try {
+                const response = await fetch(`http://localhost:8000/api/v2/empresas/${nit}/`);
+                if (!response.ok) {
+                    throw new Error('Error al obtener los datos de la empresa');
+                }
+                const data = await response.json();
+                setEmpresaData(data);
+            } catch (error) {
+                console.error('Error fetching company data:', error);
+            }
+        };
+
+        fetchCompanyData();
     }, [nit]);
 
-    if (!empresa || !representante) {
+    if (!companyData) {
         return <div>Cargando...</div>;
     }
 
@@ -52,7 +54,7 @@ const DeveloperPortal = () => {
     const handleConfirm = () => {
         openSuccessModal();
         closeModal();
-      };
+    };
 
     const openSuccessModal = () => {
         setIsSuccessModalVisible(true);
@@ -62,7 +64,7 @@ const DeveloperPortal = () => {
         }, 1000); // 1 segundo
     };
 
-    
+
 
     const renderContent = () => {
         switch (activeTab) {
