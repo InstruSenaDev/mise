@@ -40,7 +40,7 @@ export const FormRegistro = () => {
         estado: 1,
         id_programa: 1,
         id_postulante: '',
-        diagnostico: 0,
+        diagnostico_value: 0,
     });
 
     const formatCurrency = (value) => {
@@ -210,7 +210,7 @@ export const FormRegistro = () => {
                 id_programa: updatedValues.id_programa,
                 fecha_registro: updatedValues.fecha_registro,
                 id_postulante: parseInt(idPostulante, 10), // Convertir a número entero
-                diagnostico: 0
+                diagnostico_value: 0
             };
     
             // Primero registrar la empresa
@@ -224,17 +224,20 @@ export const FormRegistro = () => {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    
                     console.log('Registro de la empresa exitoso:', data);
                     // Almacenar el NIT de la empresa en localStorage
                     localStorage.setItem('empresa_nit', empresaData.nit);
                     // Redirigir a la vista de autoevaluación
                     window.location.href = "/autoevaluacion";
                 } else {
+                    
                     console.error('Error en el registro de la empresa:', data);
                     console.log(updatedValues);
                 }
             })
             .catch(error => {
+                console.log(empresaData)
                 console.error('Error al enviar los datos de la empresa:', error);
             });
     

@@ -22,7 +22,7 @@ export const TablasEmpresas = () => {
 
   // Filtrar empresas con estado 2
   const empresasConEstado2 = empresas.filter(
-    (empresa) => empresa.estado === 2
+    (empresa) => empresa.estado === 2 && empresa.diagnostico_value === 1
   );
 
   // Manejo de búsqueda

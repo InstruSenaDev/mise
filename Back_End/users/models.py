@@ -20,7 +20,7 @@ class Empresas(models.Model):
     empleados_perm = models.BigIntegerField()
     sector = models.TextField()
     estado = models.IntegerField()
-    diagnostico = models.IntegerField()
+    diagnostico_value = models.IntegerField()
     id_programa = models.ForeignKey('Programas', models.DO_NOTHING, db_column='id_programa')
     id_postulante = models.ForeignKey('Postulante', models.DO_NOTHING, db_column='id_postulante')
 
@@ -66,13 +66,11 @@ class MisePrueba(models.Model):
 class Modulos(models.Model):
     id_modulo = models.IntegerField(primary_key=True)
     nombre = models.TextField()
-    escala = models.TextField()
     objetivo = models.TextField()
     observaciones = models.TextField()
     alcance = models.TextField()
     estado_actual = models.TextField()
     nivel_ideal = models.TextField()
-    id_tema = models.ForeignKey('Temas', models.DO_NOTHING, db_column='id_tema')
 
     class Meta:
         managed = False

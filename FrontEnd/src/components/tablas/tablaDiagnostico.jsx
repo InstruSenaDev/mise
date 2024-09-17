@@ -14,7 +14,7 @@ const TablaDiagnostico = () => {
                 const data = await response.json();
                 
                 // Filtramos las empresas que tienen diagnostico en 0 y estado en 2
-                const empresasFiltradas = data.filter(empresa => empresa.diagnostico === 0 && empresa.estado === 2);
+                const empresasFiltradas = data.filter(empresa => empresa.diagnostico_value === 0 && empresa.estado === 2);
                 setEmpresas(empresasFiltradas);
             } catch (error) {
                 console.error('Error fetching data:', error);
