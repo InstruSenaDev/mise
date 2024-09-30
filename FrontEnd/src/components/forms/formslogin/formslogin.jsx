@@ -16,7 +16,6 @@ const Form = () => {
         correo: "",
         contrasena: "",
     });
-
     const [errorMessage, setErrorMessage] = useState('');
     const [errors, setErrors] = useState({});
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -48,7 +47,6 @@ const Form = () => {
      */
     const validateForm = () => {
         const newErrors = {};
-
         if (!values.correo) {
             newErrors.correo = "El correo electrónico es obligatorio.";
         } else if (!/\S+@\S+\.\S+/.test(values.correo)) {
@@ -57,30 +55,23 @@ const Form = () => {
 
         if (!values.contrasena) {
             newErrors.contrasena = "La contraseña es obligatoria.";
-        } else {
-            if (values.contrasena.length < 6) {
-                newErrors.contrasena = "La contraseña debe tener al menos 6 caracteres.";
-            }
+        } else if (values.contrasena.length < 6) {
+            newErrors.contrasena = "La contraseña debe tener al menos 6 caracteres.";
         }
 
         return newErrors;
     };
 
-    /**
-     * Maneja el envío del formulario.
-     * 
-     * @param {Event} event - Evento del formulario.
-     */
+    // Manejador del formulario
     const handleForm = async (event) => {
         event.preventDefault();
-
         const validationErrors = validateForm();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             setIsModalVisible(true);
             return; // Salir si hay errores de validación
         }
-
+    
         try {
             const response = await fetch("http://localhost:8000/api/v2/login", {
                 method: "POST",
@@ -89,9 +80,8 @@ const Form = () => {
                 },
                 body: JSON.stringify(values),
             });
-
+    
             const data = await response.json();
-
             if (response.ok) {
                 setNombres(data.data.nombres);
                 setIsModalIsVisible(true);
@@ -110,12 +100,13 @@ const Form = () => {
             setErrorMessage('Error en la solicitud. Por favor, inténtalo de nuevo más tarde.');
         }
     };
+    
 
     /**
      * Alterna la visibilidad de la contraseña.
      */
     const toggleShowPassword = () => {
-        setShowPassword(!showPassword);
+        setShowPassword((prev) => !prev);
     };
 
     /**
@@ -148,7 +139,7 @@ const Form = () => {
                     type="email"
                     value={values.correo}
                     name="correo"
-                    placeholder="Ingrese su correo..."
+                    placeholder="Ingrese su correo"
                     autoComplete="off"
                     onChange={handleInputChange}
                 />
@@ -158,7 +149,7 @@ const Form = () => {
                     type={showPassword ? "text" : "password"}
                     value={values.contrasena}
                     name="contrasena"
-                    placeholder="Ingrese su contraseña..."
+                    placeholder="Ingrese su contraseña"
                     onChange={handleInputChange}
                 />
 
@@ -191,30 +182,30 @@ const Form = () => {
             </form>
 
             {/* Modal de errores */}
-            <div
-                className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ${isModalVisible ? '' : 'hidden'}`}
-            >
-                <div className="bg-red rounded-lg p-6 max-w-sm w-full">
-                    <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-xl font-bold">Errores de validación</h2>
-                        <button
-                            className="text-gray-500 hover:text-gray-700"
-                            onClick={closeModal}
-                        >
-                            ✕
-                        </button>
-                    </div>
-                    <div>
-                        <ul>
-                            {Object.values(errors).map((error, index) => (
-                                <li key={index} className="text-white mb-2">
-                                    {error}
-                                </li>
-                            ))}
-                        </ul>
+            {isModalVisible && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-red rounded-lg p-6 max-w-sm w-full">
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-xl font-bold">Errores de validación</h2>
+                            <button
+                                className="text-gray-500 hover:text-gray-700"
+                                onClick={closeModal}
+                            >
+                                ✕
+                            </button>
+                        </div>
+                        <div>
+                            <ul>
+                                {Object.values(errors).map((error, index) => (
+                                    <li key={index} className="text-white mb-2">
+                                        {error}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
 
             {/* Modal de éxito */}
             <ModalLogIn

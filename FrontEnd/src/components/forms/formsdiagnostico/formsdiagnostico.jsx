@@ -15,6 +15,7 @@ import { useState } from "react";
 const DesempenoForm = ({ criterios, titulo, nit, onFormSubmit }) => {
   // Estado para almacenar los valores del formulario
   const [values, setValues] = useState({});
+  const [errors, setErrors] = useState({});
 
   /**
    * Maneja el cambio en los campos de entrada del formulario.
@@ -27,13 +28,26 @@ const DesempenoForm = ({ criterios, titulo, nit, onFormSubmit }) => {
     if (value === "" || (/^\d{0,3}(\.\d{0,2})?$/.test(value) && value <= 100)) {
       const questionKey = `pregunta_${index + 1}`;
       const valoracionKey = `valoracion_${index + 1}`;
+
+    // Expresión regular para permitir solo números y un decimal opcional
+    const isValidNumber = /^\d*\.?\d*$/.test(value);
+    const isInRange = value === "" || (parseFloat(value) >= 0 && parseFloat(value) <= 100);
+
+    if (isValidNumber && isInRange) {
       const newValues = {
         ...values,
         [questionKey]: criterios[index].id_pregunta,
         [valoracionKey]: value,
       };
       setValues(newValues);
-      onFormSubmit(titulo, newValues); // Envía los valores del formulario al callback
+      setErrors((prevErrors) => ({ ...prevErrors, [valoracionKey]: '' })); // Limpiar el error
+      onFormSubmit(titulo, newValues);
+    } else {
+      // Establecer el mensaje de error correspondiente
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [valoracionKey]: value === "" ? 'El campo no puede estar vacío.' : 'Por favor, ingrese un número válido entre 0 y 100.'
+      }));
     }
   };
 
@@ -63,9 +77,12 @@ const DesempenoForm = ({ criterios, titulo, nit, onFormSubmit }) => {
                   step="0.01"
                   min="0"
                   max="100"
-                  className="border border-white p-1 rounded-md text-white bg-transparent"
+                  className={`border ${errors[`valoracion_${index + 1}`] ? 'border-red-500' : 'border-white'} p-1 rounded-md text-black bg-transparent`}
                   onChange={(e) => handleInputChange(index, e.target.value)}
                 />
+                {errors[`valoracion_${index + 1}`] && (
+                  <div className="text-red-500 text-sm mt-1">{errors[`valoracion_${index + 1}`]}</div>
+                )}
               </td>
             </tr>
           ))}
@@ -73,6 +90,6 @@ const DesempenoForm = ({ criterios, titulo, nit, onFormSubmit }) => {
       </table>
     </div>
   );
-};
+}};
 
 export default DesempenoForm;

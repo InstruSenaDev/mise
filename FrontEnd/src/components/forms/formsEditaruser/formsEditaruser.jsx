@@ -107,40 +107,43 @@ export const FormsEditaruser = () => {
         // Validaciones de campo específicas
         let error = "";
 
+        // Validación para nombres y apellidos
         if (name === "nombres" || name === "apellidos") {
             if (/[^a-zA-Z\s]/.test(value)) {
                 error = "No se permiten números ni caracteres especiales";
             }
         }
 
+        // Validación para celular
         if (name === "celular") {
             if (value.length > 10) {
-                return; // Evitar que se ingrese más de 10 dígitos
-            }
-            if (!/^\d*$/.test(value)) {
+                error = "No se permite más de 10 dígitos";
+            } else if (!/^\d*$/.test(value)) {
                 error = "Solo se permiten números";
             } else if (value.length < 10) {
                 error = "Debe tener mínimo 10 dígitos";
             }
         }
 
+        // Validación para documento
         if (name === "documento") {
             if (value.length > 10) {
-                return; // Evitar que se ingrese más de 10 dígitos
-            }
-            if (!/^\d*$/.test(value)) {
+                error = "No se permite más de 10 dígitos";
+            } else if (!/^\d*$/.test(value)) {
                 error = "Solo se permiten números";
             } else if (value.length < 7) {
                 error = "Debe tener mínimo 7 dígitos";
             }
         }
-        /*
-                if (name === "contrasena") {
-                    if (!/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value)) {
-                        error = "Debe contener al menos una mayúscula, un número y un carácter especial";
-                    }
-                }
-        */
+
+        // Validación de contraseña
+        if (name === "contrasena") {
+            if (!/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value)) {
+                error = "Debe contener al menos una mayúscula, un número y un carácter especial";
+            }
+        }
+
+        // Actualiza los valores y errores en el estado
         setValues({
             ...values,
             [name]: value,

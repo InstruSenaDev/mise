@@ -55,10 +55,11 @@ export const FormRegistro = () => {
 
 
     const handleBlur = (name) => {
-        if (name === 'gastos_costos' || name === 'ventas_anopasado') {
+        // Ajusta los nombres para que coincidan con los nombres de los inputs
+        if (name === 'costos_ult_ano' || name === 'ventas_ult_ano') {
             setValues(prevValues => ({
                 ...prevValues,
-                [name]: formatCurrency(prevValues[name]),
+                [name]: formatCurrency(prevValues[name]), // Aplicar formato de moneda
             }));
         }
     };
@@ -66,36 +67,69 @@ export const FormRegistro = () => {
 
 
     const handleInputChange = (name, value) => {
+        // Validación de celular: solo permite números, longitud máxima de 10
         if (name === "celular") {
-            if (value.length > 10) {
-                return; // Evitar que se ingrese más de 10 dígitos
+            const regex = /^[0-9\b]+$/; // Solo números
+            if (!regex.test(value) || value.length > 10) {
+                return; // Evitar que se ingrese caracteres no válidos o más de 10 dígitos
             }
         }
+
+        // Validación de NIT: solo permite números, longitud máxima de 9
         if (name === "nit") {
-            if (value.length > 9) {
-                return; // Evitar que se ingrese más de 10 dígitos
+            const regex = /^[0-9\b]+$/; // Solo números
+            if (!regex.test(value) || value.length > 9) {
+                return; // Evitar que se ingrese caracteres no válidos o más de 9 dígitos
             }
         }
+
+        // Validación de número de documento: solo permite números, longitud máxima de 5
         if (name === "ndocumento") {
-            if (value.length > 5) {
-                return; // Evitar que se ingrese más de 10 dígitos
+            const regex = /^[0-9\b]+$/; // Solo números
+            if (!regex.test(value) || value.length > 5) {
+                return; // Evitar que se ingrese caracteres no válidos o más de 5 dígitos
             }
         }
+
+        // Validación de ventas del año pasado: solo números y longitud máxima de 10
         if (name === "ventas_anopasado") {
-            if (value.length > 10) {
-                return; // Evitar que se ingrese más de 10 dígitos
+            const regex = /^[0-9\b]+$/; // Solo números
+            if (!regex.test(value) || value.length > 10) {
+                return; // Evitar que se ingrese caracteres no válidos o más de 10 dígitos
             }
         }
+
+        // Validación de costos del año pasado: solo números y longitud máxima de 10
         if (name === "gastos_costos") {
-            if (value.length > 10) {
-                return; // Evitar que se ingrese más de 10 dígitos
+            const regex = /^[0-9\b]+$/; // Solo números
+            if (!regex.test(value) || value.length > 10) {
+                return; // Evitar que se ingrese caracteres no válidos o más de 10 dígitos
             }
         }
+
+        // Validación de correo electrónico: formato correcto
+        if (name === "correo") {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex para validar correo
+            if (!regex.test(value)) {
+                return; // Evitar correos inválidos
+            }
+        }
+
+        // Validación de página web: debe tener un formato válido
+        if (name === "pagina_web") {
+            const regex = /^(https?:\/\/)?([\w-]+)+[\w-]+(\.[\w-]{2,})+\/?$/; // Regex para URL
+            if (!regex.test(value)) {
+                return; // Evitar URLs no válidas
+            }
+        }
+
+        // Actualiza el estado solo si todas las validaciones se cumplen
         setValues(prevValues => ({
             ...prevValues,
             [name]: value,
         }));
     };
+
 
     const validateForm = () => {
         const newErrors = {};
@@ -167,7 +201,7 @@ export const FormRegistro = () => {
     const handleConfirm = (event) => {
         event.preventDefault();
         const updatedValues = { ...values };
-    
+
         const validationErrors = validateForm();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
@@ -176,13 +210,13 @@ export const FormRegistro = () => {
         } else {
             // Recuperar el ID del postulante desde localStorage
             const idPostulante = localStorage.getItem('id_postulante');
-    
+
             // Si no hay datos del postulante, manejar el error
             if (!idPostulante) {
                 console.error('No se encontró el ID del postulante en localStorage');
                 return;
             }
-    
+
             // Preparar los datos de la empresa
             const empresaData = {
                 nit: updatedValues.nit,
@@ -208,7 +242,7 @@ export const FormRegistro = () => {
                 id_postulante: parseInt(idPostulante, 10), // Convertir a número entero
                 diagnostico_value: 0
             };
-    
+
             // Primero registrar la empresa
             fetch('http://localhost:8000/api/v2/registro-empresa/', {
                 method: 'POST',
@@ -217,31 +251,31 @@ export const FormRegistro = () => {
                 },
                 body: JSON.stringify({ empresa: empresaData }),
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('Registro de la empresa exitoso:', data);
-                    // Almacenar el NIT de la empresa en localStorage
-                    localStorage.setItem('empresa_nit', empresaData.nit);
-                    // Redirigir a la vista de autoevaluación
-                    window.location.href = "/autoevaluacion";
-                } else {
-                    console.error('Error en el registro de la empresa:', data);
-                    console.log(updatedValues);
-                }
-            })
-            .catch(error => {
-                console.error('Error al enviar los datos de la empresa:', error);
-            });
-    
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Registro de la empresa exitoso:', data);
+                        // Almacenar el NIT de la empresa en localStorage
+                        localStorage.setItem('empresa_nit', empresaData.nit);
+                        // Redirigir a la vista de autoevaluación
+                        window.location.href = "/autoevaluacion";
+                    } else {
+                        console.error('Error en el registro de la empresa:', data);
+                        console.log(updatedValues);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al enviar los datos de la empresa:', error);
+                });
+
             // Actualizar los valores antes de cerrar el modal
             setValues(updatedValues);
             closeModal();
         }
     };
-    
-    
-    
+
+
+
 
 
 
@@ -301,7 +335,7 @@ export const FormRegistro = () => {
                                 type="text"
                                 value={values.nombre_empresa}
                                 name="nombre_empresa"
-                                placeholder="Nombre de la Empresa..."
+                                placeholder="Nombre de la Empresa"
                                 autoComplete="off"
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                             />
@@ -311,7 +345,7 @@ export const FormRegistro = () => {
                                 type="text"
                                 value={values.direccion}
                                 name="direccion"
-                                placeholder="Ingrese dirección de la empresa..."
+                                placeholder="Ingrese dirección de la empresa"
                                 autoComplete="off"
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                             />
@@ -322,7 +356,7 @@ export const FormRegistro = () => {
                                 type="text"
                                 value={values.razon_social}
                                 name="razon_social"
-                                placeholder="Razón Social de la Empresa..."
+                                placeholder="Razón Social de la Empresa"
                                 autoComplete="off"
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                             />
@@ -332,7 +366,7 @@ export const FormRegistro = () => {
                                 type="number"
                                 value={values.celular}
                                 name="celular"
-                                placeholder="Ingrese su número de celular..."
+                                placeholder="Ingrese su número de celular"
                                 autoComplete="off"
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                             />
@@ -344,7 +378,7 @@ export const FormRegistro = () => {
                                 type="number"
                                 value={values.empleados_perm}
                                 name="empleados_perm"
-                                placeholder="Ingrese el número de empleados permanentes..."
+                                placeholder="Ingrese el número de empleados permanentes"
                                 autoComplete="off"
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                             />
@@ -365,7 +399,7 @@ export const FormRegistro = () => {
                                 type="text"
                                 value={values.act_economica}
                                 name="act_economica"
-                                placeholder="Actividad Económica de la Empresa..."
+                                placeholder="Actividad Económica de la Empresa"
                                 autoComplete="off"
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                             />
@@ -375,7 +409,7 @@ export const FormRegistro = () => {
                                 type="text"
                                 value={values.gerente}
                                 name="gerente"
-                                placeholder="Ingrese el gerente de la empresa..."
+                                placeholder="Ingrese el gerente de la empresa"
                                 autoComplete="off"
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                             />
@@ -386,7 +420,7 @@ export const FormRegistro = () => {
                                 type="email"
                                 value={values.correo}
                                 name="correo"
-                                placeholder="Correo de la Empresa..."
+                                placeholder="Correo de la Empresa"
                                 autoComplete="off"
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                             />
@@ -396,7 +430,7 @@ export const FormRegistro = () => {
                                 type="text"
                                 value={values.pagina_web}
                                 name="pagina_web"
-                                placeholder="Ingrese página web de la empresa..."
+                                placeholder="Ingrese página web de la empresa"
                                 autoComplete="off"
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                             />
@@ -406,7 +440,7 @@ export const FormRegistro = () => {
                             type="text"
                             value={values.producto_servicio}
                             name="producto_servicio"
-                            placeholder="Producto o Servicio..."
+                            placeholder="Producto o Servicio"
                             autoComplete="off"
                             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                         />
@@ -435,7 +469,7 @@ export const FormRegistro = () => {
                             type="text"
                             value={values.ventas_ult_ano}
                             name="ventas_ult_ano"
-                            placeholder="Ingrese el total de ventas del año anterior..."
+                            placeholder="Ingrese el total de ventas del año anterior"
                             autoComplete="off"
                             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                             onBlur={() => handleBlur('ventas_ult_ano')}
@@ -445,7 +479,7 @@ export const FormRegistro = () => {
                             type="text"
                             value={values.costos_ult_ano}
                             name="costos_ult_ano"
-                            placeholder="Ingrese el total de gastos y costos del año anterior..."
+                            placeholder="Ingrese el total de gastos y costos del año anterior"
                             autoComplete="off"
                             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                             onBlur={() => handleBlur('costos_ult_ano')}
@@ -455,7 +489,7 @@ export const FormRegistro = () => {
                             type="text"
                             value={values.sector}
                             name="sector"
-                            placeholder="Ingrese el sector empresarial..."
+                            placeholder="Ingrese el sector empresarial"
                             autoComplete="off"
                             onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                         />
