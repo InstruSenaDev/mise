@@ -27,7 +27,7 @@ export const FormRegistro = () => {
         razon_social: '',
         nit: '',
         empleados_perm: '',
-        ventas_ult_ano: '',
+        ventas_ult_ano: '', // Guardaremos estos como enteros o números en el estado
         costos_ult_ano: '',
         fecha_registro: '2024-01-01',
         sector: '',
@@ -43,8 +43,13 @@ export const FormRegistro = () => {
         diagnostico_value: 0,
     });
 
+    const [formattedValues, setFormattedValues] = useState({
+        ventas_ult_ano: '', // Para almacenar el valor formateado temporalmente
+        costos_ult_ano: '',
+    });
+
     const formatCurrency = (value) => {
-        const number = parseFloat(value.replace(/[^0-9.-]+/g, ''));
+        const number = parseFloat(value);
         if (isNaN(number)) return '';
         return new Intl.NumberFormat('es-CO', {
             style: 'currency',
@@ -54,13 +59,16 @@ export const FormRegistro = () => {
     };
 
 
+    const parseCurrencyToInteger = (value) => {
+        return parseInt(value.replace(/[^0-9]/g, ''), 10) || 0;
+    };
+
     const handleBlur = (name) => {
-        
-        // Ajusta los nombres para que coincidan con los nombres de los inputs
         if (name === 'costos_ult_ano' || name === 'ventas_ult_ano') {
-            setValues(prevValues => ({
-                ...prevValues,
-                [name]: formatCurrency(prevValues[name]), // Aplicar formato de moneda
+            const formattedValue = formatCurrency(values[name]); // Formatear solo para mostrar en el input
+            setFormattedValues(prev => ({
+                ...prev,
+                [name]: formattedValue,
             }));
         }
     };
@@ -73,20 +81,72 @@ export const FormRegistro = () => {
             ...prevValues,
             [name]: value,
         }));
-        
+
         // Validación de celular: solo permite números, longitud máxima de 10
         if (name === "celular") {
-            const regex = /^[0-9\b]+$/; // Solo números
+            const regex = /^[0-9\b]+$/;
             if (!regex.test(value) || value.length > 10) {
-                return; // Evitar que se ingrese caracteres no válidos o más de 10 dígitos
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    celular: 'El celular debe ser un número de máximo 10 dígitos',
+                }));
+                return;
+            } else {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    celular: null,
+                }));
             }
         }
 
         // Validación de NIT: solo permite números, longitud máxima de 9
         if (name === "nit") {
-            const regex = /^[0-9\b]+$/; // Solo números
+            const regex = /^[0-9\b]+$/;
             if (!regex.test(value) || value.length > 9) {
-                return; // Evitar que se ingrese caracteres no válidos o más de 9 dígitos
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    nit: 'El NIT debe ser un número de máximo 9 dígitos',
+                }));
+                return;
+            } else {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    nit: null,
+                }));
+            }
+        }
+
+        // Validación de correo electrónico
+        if (name === "correo") {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!regex.test(value)) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    correo: 'El correo no tiene un formato válido',
+                }));
+                return;
+            } else {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    correo: null,
+                }));
+            }
+        }
+
+        // Validación de página web
+        if (name === "pagina_web") {
+            const regex = /^(https?:\/\/)?([\w-]+)+[\w-]+(\.[\w-]{2,})+\/?$/;
+            if (!regex.test(value)) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    pagina_web: 'La página web no tiene un formato válido',
+                }));
+                return;
+            } else {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    pagina_web: null,
+                }));
             }
         }
 
@@ -98,45 +158,32 @@ export const FormRegistro = () => {
             }
         }
 
-        // Validación de ventas del año pasado: solo números y longitud máxima de 10
-        if (name === "ventas_anopasado") {
-            const regex = /^[0-9\b]+$/; // Solo números
-            if (!regex.test(value) || value.length > 10) {
-                return; // Evitar que se ingrese caracteres no válidos o más de 10 dígitos
-            }
-        }
+        if (name === 'ventas_ult_ano' || name === 'costos_ult_ano') {
+            // Almacenamos el valor como número en el estado "values"
+            const parsedValue = parseCurrencyToInteger(value); // Convertir el valor ingresado en número entero
+            setValues(prevValues => ({
+                ...prevValues,
+                [name]: parsedValue, // Guardamos el número real en el estado
+            }));
 
-        // Validación de costos del año pasado: solo números y longitud máxima de 10
-        if (name === "gastos_costos") {
-            const regex = /^[0-9\b]+$/; // Solo números
-            if (!regex.test(value) || value.length > 10) {
-                return; // Evitar que se ingrese caracteres no válidos o más de 10 dígitos
-            }
+            // Actualizamos el valor temporal formateado para mostrar en el input
+            setFormattedValues(prevFormattedValues => ({
+                ...prevFormattedValues,
+                [name]: value, // Mantenemos el valor que el usuario ingresa sin formatearlo mientras escribe
+            }));
+        } else {
+            setValues((prevValues) => ({
+                ...prevValues,
+                [name]: value,
+            }));
         }
-
-        // Validación de correo electrónico: formato correcto
-        if (name === "correo") {
-            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex para validar correo
-            if (!regex.test(value)) {
-                return; // Si el correo no es válido, no actualizamos el estado
-            }
-        }
-    
-        // Validación de página web
-        if (name === "pagina_web") {
-            const regex = /^(https?:\/\/)?([\w-]+)+[\w-]+(\.[\w-]{2,})+\/?$/; // Regex para URL
-            if (!regex.test(value)) {
-                return; // Si la URL no es válida, no actualizamos el estado
-            }
-        }
-
         // Actualiza el estado solo si todas las validaciones se cumplen
         setValues(prevValues => ({
             ...prevValues,
             [name]: value,
         }));
 
-        
+
     };
 
 
@@ -478,17 +525,18 @@ export const FormRegistro = () => {
                             <input
                                 className={`h-[3.5rem] w-full rounded-lg caret-white bg-transparent text-white peer border px-2 py-2.5 pr-8 font-sans text-lg font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-white placeholder-shown:border-t-white`}
                                 type="text"
-                                value={values.ventas_ult_ano}
+                                value={formattedValues.ventas_ult_ano || values.ventas_ult_ano}
                                 name="ventas_ult_ano"
                                 placeholder="Ingrese el total de ventas del año anterior"
                                 autoComplete="off"
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                                 onBlur={() => handleBlur('ventas_ult_ano')}
                             />
+
                             <input
                                 className={`h-[3.5rem] w-full rounded-lg caret-white bg-transparent text-white peer border px-2 py-2.5 pr-8 font-sans text-lg font-normal outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-white placeholder-shown:border-t-white`}
                                 type="text"
-                                value={values.costos_ult_ano}
+                                value={formattedValues.costos_ult_ano || values.costos_ult_ano}
                                 name="costos_ult_ano"
                                 placeholder="Ingrese el total de gastos y costos del año anterior"
                                 autoComplete="off"
