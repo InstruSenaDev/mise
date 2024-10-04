@@ -32,7 +32,7 @@ const DetalleEmpresas = () => {
         <div className="flex flex-col w-full h-full">
           <div className="bg-greyBlack h-20 w-full">
           </div>
-          <div className="bg-greyBg flex flex-col px-6 py-6 h-full w-full">
+          <div className="bg-greyBg flex flex-col px-6 py-6 h-full w-full overflow-y-auto">
             <GoBack text="Informacion Empresas" />
             <DeveloperPortal />
           </div>

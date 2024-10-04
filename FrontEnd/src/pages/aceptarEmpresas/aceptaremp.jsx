@@ -336,7 +336,7 @@ const DeveloperPortal = () => {
         <>
             <ConfirmModal isOpen={isOpen} closeModal={closeModal} handleConfirm={handleConfirm} />
             <CancelModal isCOpen={isCOpen} closeCModal={closeCModal} handleCancel={handleCancel} />
-            <div className="p-2 w-full">
+            <div className="p-2 w-[83.5rem]">
                 <div className="flex xl:flex-row lg:flex-row flex-col xl:space-x-8">
                     <div className='flex flex-row xl:space-x-8 lg:space-x-8 space-x-7 mb-6 xl:w-full lg:w-full max-md:max-w-[25rem] overflow-x-auto'>
                         <button
@@ -363,7 +363,7 @@ const DeveloperPortal = () => {
                         <button onClick={openCModal} className='bg-red rounded-tr-xl rounded-br-xl p-2 text-white hover:bg-white hover:text-red'>Rechazar</button>
                     </div>
                 </div>
-                <div className='overflow-y-auto lg:max-h-[20rem]' style={styles.customScrollbar}>
+                <div className='overflow-y-auto lg:max-h-[50rem]' style={styles.customScrollbar}>
                     {renderContent()}
                 </div>
             </div>
