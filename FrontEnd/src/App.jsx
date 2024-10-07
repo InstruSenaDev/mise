@@ -48,6 +48,7 @@ const AceptarEmpresas = lazy(() => import("./pages/aceptarEmpresas/aceptarempv.j
 const DetalleEmpresas = lazy(() => import("./pages/aceptarEmpresas/verinfoempresa.jsx"));
 const Autoevaluacion = lazy(() => import("./pages/autoevaluacion/autoevaluacion.jsx"));
 const VerEmpDiag = lazy(() => import("./pages/diagnostico/verempdiag.jsx"));
+const VerEmpDiagF = lazy(() => import("./pages/diagnostico/verempdiagf.jsx"));
 const EvaluacionEmpresa = lazy(() => import("./pages/diagnostico/diagnosticoempresa.jsx"));
 const EvaluacionEmpresaNuevas = lazy (() => import("./pages/diagnostico/diagnosticoempresas.jsx"))
 const EvaluacionEmpresaNuevasf = lazy (() => import("./pages/diagnostico/diagnosticoempresasf.jsx"))
@@ -190,6 +191,11 @@ const AppRoutes = () => {
           <Route path="/diagnostico/empresa-vista-final/:nit" element={
             <ProtectedRoute allowedRoles={[1, 2, 3]}>
               <EvaluacionEmpresaNuevasf />
+            </ProtectedRoute>
+          } />
+           <Route path="/diagnostico-vista-final/:nit" element={
+            <ProtectedRoute allowedRoles={[1, 2, 3]}>
+              <VerEmpDiagF />
             </ProtectedRoute>
           } />
           <Route path="/diagnosticofinal/empresa" element={

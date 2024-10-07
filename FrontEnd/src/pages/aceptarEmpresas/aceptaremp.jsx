@@ -191,16 +191,27 @@ const DeveloperPortal = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ estado: 3 }),
+                body: JSON.stringify({ estado: 3 }), // Estado 3 para rechazo
             })
-                .then(response => response.ok ? response.json() : Promise.reject('Error al actualizar el estado'))
-                .then(() => {
-                    setIsSuccessModalVisible(false);
-                    navigate(`/aceptar-empresas`);
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(error => {
+                            throw new Error(`Error del servidor: ${error.detail || 'No se pudo actualizar el estado'}`);
+                        });
+                    }
+                    return response.json();
                 })
-                .catch(error => console.error('Error:', error));
+                .then(() => {
+                    setIsSuccessCModalVisible(false); // Aquí debe cerrar el modal correcto
+                    navigate(`/aceptar-empresas`);
+                })                
+                .catch(error => {
+                    console.error('Error actualizando el estado:', error);
+                    alert(`No se pudo actualizar el estado: ${error.message}`);
+                });
         }, 1000); // 1 segundo
     };
+
 
     const renderContent = () => {
         switch (activeTab) {

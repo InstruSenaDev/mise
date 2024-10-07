@@ -50,7 +50,7 @@ const Autoevaluacion = () => {
           <div
             className="bg-greyBg flex flex-col h-full w-full items-center justify-center gap-5"
           >
-            <div className="flex flex-col lg:flex-row gap-5 p-5 w-full xl:justify-center items-center">
+            <div className="flex flex-col lg:flex-row gap-5 p-5 w-full xl:justify-center justify-between items-center">
               {/* Tarjeta de información */}
               <div
                 className="w-full xl:w-1/2 h-full flex flex-col gap-5 bg-greyBlack p-5 rounded-md"
@@ -76,13 +76,6 @@ const Autoevaluacion = () => {
                   pueda cumplir sus sueños empresariales. La ruta <br />
                   MISE se compone de los ejes:
                 </div>
-                <ol className="list-decimal pl-5">
-                  <li>Información de valor para su empresa</li>
-                  <li>Consultoría</li>
-                  <li>Contactos de valor y <i>networking</i></li>
-                  <li>Asesoría personalizada</li>
-                  <li>Formación especializada en 6 áreas empresariales:</li>
-                </ol>
                 <ul className="list-disc pl-5">
                   <li>CAPACIDADES GERENCIALES</li>
                   <li>MEJORA DE OPERACIONES APLICANDO <br />BUSINESS INTELLIGENCE</li>

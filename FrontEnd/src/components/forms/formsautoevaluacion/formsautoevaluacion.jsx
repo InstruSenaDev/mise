@@ -224,17 +224,17 @@ export const FormAuto = () => {
     return (
         <>
             <ConfirmModal isOpen={isOpen} closeModal={closeModal} handleConfirm={handleForm} />
-            <div className='bg-greyBlack w-full lg:w-max h-auto p-5 lg:p-12 flex flex-col gap-5 rounded-2xl'>
+            <div className='bg-greyBlack w-full lg:w-full h-auto p-5 flex flex-col gap-2 rounded-2xl'>
                 <div className="flex justify-center">
                     <p className="font-bold text-2xl lg:text-3xl text-left">DIAGNÓSTICO</p>
                 </div>
                 <p className="text-sm lg:text-base text-center lg:text-left">
-                    DE 1 A 10, SIENDO 1 LA CALIFICACIÓN MÁS BAJA Y 10 LA MÁS ALTA, <br />
-                    CALIFIQUE CÓMO EVALÚA EL DESEMPEÑO DE SU EMPRESA EN LAS <br />
-                    SIGUIENTES ÁREAS
+                    De 1 a 10, siendo 1 la calificacion mas baja y 10 la mas alta, <br /> 
+                    califique como evalua el desempeño de su empresa en las <br /> 
+                    siguientes areas:
                 </p>
-                <form className="form items-center rounded-xl p-3 flex flex-col justify-center gap-10 lg:gap-[5.5rem]">
-                    <div className="flex flex-col gap-5 justify-center w-full">
+                <form className="form items-center rounded-xl p-3 flex flex-col justify-center gap-10 lg:gap-[2.5rem]">
+                    <div className="flex flex-col gap-4 justify-center w-full">
                         {/* Estrategia y Dirección */}
                         <div className='flex flex-col lg:flex-row gap-3 items-center'>
                             <p className='text-base lg:text-xl w-full text-center lg:text-left'>Estrategia y Dirección</p>

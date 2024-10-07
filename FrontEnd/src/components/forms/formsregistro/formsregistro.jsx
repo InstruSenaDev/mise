@@ -196,6 +196,7 @@ export const FormRegistro = () => {
                 onSubmit={handleSubmit}
                 className="form custom-scrollbar w-full xl:max-h-full max-h-[21rem] md:max-h-full overflow-y-auto flex flex-col gap-6 bg-greyBlack p-6 md:p-10 rounded-xl mx-auto"
             >
+                <h1 className="font-bold text-xl">Todos los campos son requeridos.</h1>
                 {/* Campos de nombre y apellido */}
                 <div className="flex flex-row w-full gap-5">
                     <input

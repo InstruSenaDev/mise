@@ -39,18 +39,9 @@ const validacionDeSueños = [
 // Componente principal
 const ValidacionDeSueños = ({ diagnosticos }) => {
   const [suenoSeleccionado, setSuenoSeleccionado] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [infoMessage, setInfoMessage] = useState("");
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
   // Obtener la lista de todos los sueños de los diagnósticos
   const suenos = diagnosticos.flatMap((diagnostico) => diagnostico.suenos);
-
-  // Función para mostrar el modal informativo con un mensaje
-  const mostrarModalInformativo = (mensaje) => {
-    setInfoMessage(mensaje);
-    setIsInfoModalOpen(true);
-  };
 
   return (
     <div
@@ -96,17 +87,6 @@ const ValidacionDeSueños = ({ diagnosticos }) => {
         <ModalConcretarSueno
           sueno={suenoSeleccionado} // Pasar el sueño seleccionado
           onClose={() => setSuenoSeleccionado(null)} // Cerrar modal
-        />
-      )}
-
-      {/* Modal de carga */}
-      {loading && <Modalcarga />}
-
-      {/* Modal informativo */}
-      {isInfoModalOpen && (
-        <ModalInformativo
-          message={infoMessage}
-          onClose={() => setIsInfoModalOpen(false)}
         />
       )}
     </div>

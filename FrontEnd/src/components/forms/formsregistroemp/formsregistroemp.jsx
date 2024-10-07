@@ -384,6 +384,7 @@ export const FormRegistro = () => {
             </div>
             <form className="form custom-scrollbar w-full max-h-[50rem] overflow-y-auto flex flex-row bg-greyBlack rounded-xl gap-3">
                 <div className='flex flex-col gap-6 w-full p-6 rounded-xl'>
+                    <h1 className="font-bold text-xl">Todos los campos son requeridos.</h1>
                     <div className="flex flex-col gap-6 w-full">
                         <div className='flex flex-row gap-6 w-full'>
                             <input
@@ -553,7 +554,7 @@ export const FormRegistro = () => {
                             onChange={(value) => handleInputChange("estado", value)}
                         />
                         */}
-                        <div className="flex justify-end pb-2">
+                        <div className="flex justify-end pb-6">
                             <Boton text={"Siguiente"} onClick={openModal} />
                         </div>
                     </div>
